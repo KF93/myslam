@@ -1,0 +1,1 @@
+/home/lkf/Code/myslam/ch6/g2o_curve_fitting/build/CMakeFiles/curve_fitting.dir
