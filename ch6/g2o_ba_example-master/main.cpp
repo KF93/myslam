@@ -1,18 +1,12 @@
-/*************************************************************************
-	> File Name: main.cpp
-	> Author:李小二 
-	> Mail: 
-	> Created Time: 2017年04月30日 星期日 14时12分50秒
- *
- * * * 在这个程序中，我们读取两张图像，进行特征匹配。然后根据匹配得到的特征，计算相机运动以及特征点的位置。这是一个典型的Bundle Adjustment，我们用g2o进行优化。
- ** ***********************************************************************/
-/*************************************************************************
- 用g2o实现一下BA。选取的结点和边如下：
+/**
+ * BA Example 
+ * Author: Xiang Gao
+ * Date: 2016.3
+ * Email: gaoxiang12@mails.tsinghua.edu.cn
+ * 
+ * 在这个程序中，我们读取两张图像，进行特征匹配。然后根据匹配得到的特征，计算相机运动以及特征点的位置。这是一个典型的Bundle Adjustment，我们用g2o进行优化。
+ */
 
- 结点1：相机位姿结点：g2o::VertexSE3Expmap，来自<g2o/types/sba/types_six_dof_expmap.h>；
- 结点2：特征点空间坐标结点：g2o::VertexSBAPointXYZ，来自<g2o/types/sba/types_sba.h>；
- 边：重投影误差：g2o::EdgeProjectXYZ2UV，来自<g2o/types/sba/types_six_dof_expmap.h>；
- ************************************************************************/
 // for std
 #include <iostream>
 // for opencv 
@@ -32,7 +26,7 @@
 
 
 using namespace std;
-using namespace cv;
+
 // 寻找两个图像中的对应点，像素坐标系
 // 输入：img1, img2 两张图像
 // 输出：points1, points2, 两组对应的2D点
@@ -182,6 +176,7 @@ int main( int argc, char** argv )
     return 0;
 }
 
+
 int     findCorrespondingPoints( const cv::Mat& img1, const cv::Mat& img2, vector<cv::Point2f>& points1, vector<cv::Point2f>& points2 )
 {
     //cv::ORB orb;
@@ -193,41 +188,31 @@ int     findCorrespondingPoints( const cv::Mat& img1, const cv::Mat& img2, vecto
     detector->detect(img2,kp2);
     descriptor->compute(img1,kp1,desp1);
     descriptor->compute(img2,kp2,desp2);
+    //orb( img1, cv::Mat(), kp1, desp1 );
+    //orb( img2, cv::Mat(), kp2, desp2 );
     cout<<"分别找到了"<<kp1.size()<<"和"<<kp2.size()<<"个特征点"<<endl;
-    cv::Ptr<cv::DescriptorMatcher>  matcher =cv::DescriptorMatcher::create("BruteForce-Hamming");
-    //double knn_match_ratio=0.8;
-    //vector<vector<cv::DMatch> >matches_knn;
-    //matcher->knnMatch(desp1,desp2,matches_knn,2);
-    vector<cv::DMatch> matches;
-    matcher->match ( desp1, desp2, matches );
-    double min_dist=10000, max_dist=0;
-
-    //找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离
-    for ( int i = 0; i < desp1.rows; i++ )
+    
+    cv::Ptr<cv::DescriptorMatcher>  matcher = cv::DescriptorMatcher::create( "BruteForce-Hamming");
+    
+    double knn_match_ratio=0.8;
+    vector< vector<cv::DMatch> > matches_knn;
+    matcher->knnMatch( desp1, desp2, matches_knn, 2 );
+    vector< cv::DMatch > matches;
+    for ( size_t i=0; i<matches_knn.size(); i++ )
     {
-        double dist = matches[i].distance;
-        if ( dist < min_dist ) min_dist = dist;
-        if ( dist > max_dist ) max_dist = dist;
+        if (matches_knn[i][0].distance < knn_match_ratio * matches_knn[i][1].distance )
+            matches.push_back( matches_knn[i][0] );
     }
-    std::vector< DMatch > good_matches;
-    for ( int i = 0; i < desp1.rows; i++ )
+    
+    if (matches.size() <= 20) //匹配点太少
+        return false;
+    
+    for ( auto m:matches )
     {
-        if ( matches[i].distance <= max ( 2*min_dist, 30.0 ) )
-        {
-            good_matches.push_back ( matches[i] );
-        }
+        points1.push_back( kp1[m.queryIdx].pt );
+        points2.push_back( kp2[m.trainIdx].pt );
     }
-    //for(size_t i=0;i<matches_knn.size();i++)
-    //{
-    //    if(matches_knn[i][0].distance<knn_match_ratio*matches_knn[i][1].distance)
-    //    matches.push_back(matches_knn[i][0]);
-    //}
-    if(good_matches.size()<=20)
-    return false;
-    for(auto m:good_matches)
-    {
-        points1.push_back(kp1[m.queryIdx].pt);
-        points2.push_back(kp2[m.trainIdx].pt);
-    }
+    
     return true;
 }
+
