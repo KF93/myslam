@@ -111,6 +111,32 @@ feature_extraction/fast:
 	$(MAKE) -f CMakeFiles/feature_extraction.dir/build.make CMakeFiles/feature_extraction.dir/build
 .PHONY : feature_extraction/fast
 
+#=============================================================================
+# Target rules for targets named pose_estimation_2d2d
+
+# Build rule for target.
+pose_estimation_2d2d: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pose_estimation_2d2d
+.PHONY : pose_estimation_2d2d
+
+# fast build rule for target.
+pose_estimation_2d2d/fast:
+	$(MAKE) -f CMakeFiles/pose_estimation_2d2d.dir/build.make CMakeFiles/pose_estimation_2d2d.dir/build
+.PHONY : pose_estimation_2d2d/fast
+
+#=============================================================================
+# Target rules for targets named triangulation
+
+# Build rule for target.
+triangulation: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 triangulation
+.PHONY : triangulation
+
+# fast build rule for target.
+triangulation/fast:
+	$(MAKE) -f CMakeFiles/triangulation.dir/build.make CMakeFiles/triangulation.dir/build
+.PHONY : triangulation/fast
+
 feature_extraction.o: feature_extraction.cpp.o
 .PHONY : feature_extraction.o
 
@@ -135,6 +161,54 @@ feature_extraction.cpp.s:
 	$(MAKE) -f CMakeFiles/feature_extraction.dir/build.make CMakeFiles/feature_extraction.dir/feature_extraction.cpp.s
 .PHONY : feature_extraction.cpp.s
 
+pose_estimation_2d2d.o: pose_estimation_2d2d.cpp.o
+.PHONY : pose_estimation_2d2d.o
+
+# target to build an object file
+pose_estimation_2d2d.cpp.o:
+	$(MAKE) -f CMakeFiles/pose_estimation_2d2d.dir/build.make CMakeFiles/pose_estimation_2d2d.dir/pose_estimation_2d2d.cpp.o
+.PHONY : pose_estimation_2d2d.cpp.o
+
+pose_estimation_2d2d.i: pose_estimation_2d2d.cpp.i
+.PHONY : pose_estimation_2d2d.i
+
+# target to preprocess a source file
+pose_estimation_2d2d.cpp.i:
+	$(MAKE) -f CMakeFiles/pose_estimation_2d2d.dir/build.make CMakeFiles/pose_estimation_2d2d.dir/pose_estimation_2d2d.cpp.i
+.PHONY : pose_estimation_2d2d.cpp.i
+
+pose_estimation_2d2d.s: pose_estimation_2d2d.cpp.s
+.PHONY : pose_estimation_2d2d.s
+
+# target to generate assembly for a file
+pose_estimation_2d2d.cpp.s:
+	$(MAKE) -f CMakeFiles/pose_estimation_2d2d.dir/build.make CMakeFiles/pose_estimation_2d2d.dir/pose_estimation_2d2d.cpp.s
+.PHONY : pose_estimation_2d2d.cpp.s
+
+triangulation.o: triangulation.cpp.o
+.PHONY : triangulation.o
+
+# target to build an object file
+triangulation.cpp.o:
+	$(MAKE) -f CMakeFiles/triangulation.dir/build.make CMakeFiles/triangulation.dir/triangulation.cpp.o
+.PHONY : triangulation.cpp.o
+
+triangulation.i: triangulation.cpp.i
+.PHONY : triangulation.i
+
+# target to preprocess a source file
+triangulation.cpp.i:
+	$(MAKE) -f CMakeFiles/triangulation.dir/build.make CMakeFiles/triangulation.dir/triangulation.cpp.i
+.PHONY : triangulation.cpp.i
+
+triangulation.s: triangulation.cpp.s
+.PHONY : triangulation.s
+
+# target to generate assembly for a file
+triangulation.cpp.s:
+	$(MAKE) -f CMakeFiles/triangulation.dir/build.make CMakeFiles/triangulation.dir/triangulation.cpp.s
+.PHONY : triangulation.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -143,10 +217,18 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... feature_extraction"
+	@echo "... pose_estimation_2d2d"
 	@echo "... rebuild_cache"
+	@echo "... triangulation"
 	@echo "... feature_extraction.o"
 	@echo "... feature_extraction.i"
 	@echo "... feature_extraction.s"
+	@echo "... pose_estimation_2d2d.o"
+	@echo "... pose_estimation_2d2d.i"
+	@echo "... pose_estimation_2d2d.s"
+	@echo "... triangulation.o"
+	@echo "... triangulation.i"
+	@echo "... triangulation.s"
 .PHONY : help
 
 
